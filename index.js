@@ -13,3 +13,62 @@ const colors = [
   { hex: "#795548", rgb: "121,85,72" },
   { hex: "#607d8b", rgb: "96,125,139" },
 ];
+
+const paletteContainer = document.querySelector(".js-palette");
+const cardsMarkup = createsColorCardsMarkup(colors);
+
+paletteContainer.insertAdjacentHTML("beforeend", cardsMarkup);
+
+function createsColorCardsMarkup(colors) {
+  return colors
+    .map(({ hex, rgb }) => {
+      return `<div class="color-card">
+        <div
+          class="color-swatch"
+          data-hex= "${hex}"
+          data-rgb= "${rgb}"
+          style="background-color: ${hex}"
+        ></div>
+        <div class="color-meta">
+          <p>HEX: ${hex}</p>
+          <p>RGB: ${rgb}</p>
+        </div>
+      </div> `;
+    })
+    .join("");
+}
+
+paletteContainer.addEventListener("click", onPaletteContainerClick);
+
+function onPaletteContainerClick(e) {
+  const isColorSwatchEl = e.target.classList.contains("color-swatch");
+
+  if (!isColorSwatchEl) {
+    return;
+  }
+
+  const currentActiveCard = document.querySelector(".color-card.is-active");
+
+  if (currentActiveCard) {
+    currentActiveCard.classList.remove("is-active");
+  }
+
+  const swatchEl = e.target;
+  const parentColorCard = swatchEl.closest(".color-card");
+  parentColorCard.classList.add("is-active");
+
+  document.body.style.backgroundColor = swatchEl.dataset.hex;
+}
+
+//   <div class="color-card">
+//     <div
+//       class="color-swatch"
+//       data-hex="#955014"
+//       data-rgb="149,80,20"
+//       style="background-color: #955014"
+//     ></div>
+//     <div class="color-meta">
+//       <p>HEX: #955014</p>
+//       <p>RGB: 149,80,20</p>
+//     </div>
+//   </div>;
