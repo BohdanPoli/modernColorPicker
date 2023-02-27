@@ -47,28 +47,26 @@ function onPaletteContainerClick(e) {
     return;
   }
 
+  const swatchEl = e.target;
+  const parentColorCard = swatchEl.closest(".color-card");
+
+  removeActiveCardClass();
+  addActiveCardClass(parentColorCard);
+  setBodyBgColor(swatchEl.dataset.hex);
+}
+
+function setBodyBgColor(color) {
+  document.body.style.backgroundColor = color;
+}
+
+function removeActiveCardClass() {
   const currentActiveCard = document.querySelector(".color-card.is-active");
 
   if (currentActiveCard) {
     currentActiveCard.classList.remove("is-active");
   }
-
-  const swatchEl = e.target;
-  const parentColorCard = swatchEl.closest(".color-card");
-  parentColorCard.classList.add("is-active");
-
-  document.body.style.backgroundColor = swatchEl.dataset.hex;
 }
 
-//   <div class="color-card">
-//     <div
-//       class="color-swatch"
-//       data-hex="#955014"
-//       data-rgb="149,80,20"
-//       style="background-color: #955014"
-//     ></div>
-//     <div class="color-meta">
-//       <p>HEX: #955014</p>
-//       <p>RGB: 149,80,20</p>
-//     </div>
-//   </div>;
+function addActiveCardClass(card) {
+  card.classList.add("is-active");
+}
